@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
+  <title>Veggies R' Us</title>
+
+  <!-- CSS  -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+  <link href="css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+</head>
+<body>
+  <nav class="white" role="navigation">
+    <div class="nav-wrapper container">
+      <a id="logo-container" href="index.html#john" class="brand-logo"><img width="50" src="./Logo.png" alt="My Logo"></a>
+      <ul class="right hide-on-med-and-down">
+        <li><a href="index.html">Home</a></li>
+      </ul>
+
+      <ul id="nav-mobile" class="side-nav">
+        <li><a href="index.html">Home</a></li>
+      </ul>
+      <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
+    </div>
+  </nav>
+
+  <div class="section no-pad-bot" id="index-banner" style="background-image:url('background2.jpg')">
+    <div class="container">
+      <br><br>
+      <h1 class="header center teal-text">Lets Start Shopping</h1>
+      <div class="row center">
+        <h5 class="header col s12 light">Add your own JSON of yummy veggies or leave blank for default veggies</h5>
+      </div>
+      <div class="row center">
+       <div class="input-field">
+          <input placeholder="http://veggies.json" id="jsonUrl" type="text" class="validate" >
+          <label for="veggies_json">Veggies</label>
+        </div>
+        <a id="load-button" class="btn-large waves-effect waves-light teal" onclick="loadjson()" >Load Veggies</a>
+      </div>
+      <br><br>
+
+    </div>
+  </div>
+
+
+  <div class="container">
+    <div id="food" class="section">
+		<!-- space to generate list of veggies 
+			Use template below for generating veggies
+					
+	      <div class="col s12 m4">
+          <div class="icon-block">
+			<center>
+				<form>
+				    <div class="col s6 m6 l6">
+				        <label for="veggie_#">Amount</label>
+				        <input type="number" id="veggie_#" class="materialize-textarea"></input>
+					</div>
+				    <div class="input-field  col s6 m6 l6">
+						<button class="btn waves-effect waves-light" type="submit" name="">Add to Cart
+						<i class="material-icons right">add</i>
+						</button>
+					</div>
+				</form>
+			<h5 >Veggie_Name</h5>
+            <p>Veggie_price</p>
+            <p class="light">Veggie_description</p>
+			<center>
+          </div>
+        </div>
+
+		-->
+
+      </div>
+
+
+    </div>
+	
+	<div class="container" id="cart" >
+	<hr>
+		<table class="responsive-table">
+              <thead>
+                <tr>
+                    <th data-field="id">Name</th>
+                    <th data-field="name">Amount</th>
+                    <th data-field="price">Price</th>
+					<th data-field="remove">Remove</th>
+					<th data-field="remove">Edit</th>
+                </tr>
+              </thead>
+              <tbody id="veggies_list">
+
+              </tbody>
+        </table>
+		<h5 id="total">Total: $0</h5>
+	</div>
+    <br><br>
+        
+    <div class="section">
+				
+      <div class="row" id="food" >
+
+	  </div><!-- end of row -->
+  </div>
+
+  <footer class="page-footer teal">
+    <div class="container">
+      <div class="row">
+        <div class="col l6 s12">
+          <h5 class="white-text" id="john">Programmer Bio</h5>
+          <p class="grey-text text-lighten-4">I'm a Professional Coffee Drinker, Pun Maker and UI/UX Guru. If its speed and design you're looking for, you've found the right candidate. I prefer long walks on the beach and want a big fluffy husky, but I’ll take a whisky after work until then.</p>
+
+
+        </div>
+        <div class="col l3 s12">
+          <h5 class="white-text">Favorite Links</h5>
+          <ul>
+            <li><a class="white-text" href="http://www.coven.link">Coven</a></li>
+            <li><a class="white-text" href="http://www.unsplash.com">Unsplash</a></li>
+            <li><a class="white-text" href="http://www.codepen.io">Codepen</a></li>
+            <li><a class="white-text" href="http://materializecss.com">Materialize</a></li>
+          </ul>
+        </div>
+        <div class="col l3 s12">
+          <h5 class="white-text">Connect</h5>
+          <ul>
+            <li><a class="white-text" href="https://github.com/hunter32292">GitHub</a></li>
+            <li><a class="white-text" href="https://www.linkedin.com/pub/john-stupka/61/341/83a">LinkedIn</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer-copyright">
+      <div class="container">
+		
+      </div>
+    </div>
+  </footer>
+
+
+  <!--  Scripts-->
+  <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <script src="js/materialize.js"></script>
+  <script>
+	// Hash to store shopping information
+	var shopping_cart = {};
+	var vegetables;
+	$("#cart").hide();
+	function loadjson(){
+	var jsonurl = document.getElementById("jsonUrl").value;
+	var obj;
+	if (jsonurl == ""){	
+		obj = [
+			{
+				"price": "0.99",
+				"name": "Carrots",
+				"description": "Fresh Orange Carrots"
+			},
+			{
+				"price": "1.99",
+				"name": "Broccoli",
+				"description": "Fresh heads of Broccoli"
+			},
+			{
+				"price": "1.50",
+				"name": "Tomatoes",
+				"description": "Fresh Orange tomatoes"
+			},
+			{
+				"price": "0.99",
+				"name": "Peppers",
+				"description": "Fresh peppers (Green,Red,Orange)"
+			}
+		];
+		Materialize.toast("Default JSON Loaded", 2500);
+		addToFood(obj);
+	}else{
+		var jqxhr = $.getJSON( jsonurl, function() {
+			console.log( "success" );
+		})
+		.done(function() {
+			console.log( "second success" );
+			Materialize.toast("JSON Loaded", 2500);
+			addToFood(obj);
+		})
+		.fail(function() {
+			console.log( "error" );
+			Materialize.toast("There was an Error Loading your JSON", 2500);
+		})
+		.always(function() {
+			console.log( "complete" );
+		});	
+		
+		}
+		
+	};
+	function	addToFood(obj) {
+	var items = [];
+		for (var i=0; i< obj.length ; i++){
+			console.log("Name: "+obj[i].name);
+			console.log("Price: "+obj[i].price);
+			console.log("Description: "+obj[i].description);
+			items.push( "<div class=\"col s6 m6 l6\"><div class=\"icon-block\"><center><form><div class=\"col s6 m6 l6\"><label for=\"" +i+ "\">Amount</label><input type=\"number\" id=\""+i+"\" class=\"materialize-textarea\"></input></div><div class=\"input-field  col s6 m6 l6\"><a class=\"btn waves-effect waves-light\" onclick=\"addToCart("+i+")\" name=\"\">Add to Cart<i class=\"material-icons right\">add</i></a></div></form><h5>"+obj[i].name+"</h5><p>&#36;"+obj[i].price+"</p><p class=\"light\">"+obj[i].description+"</p><center></div></div>");
+		}
+		$("#food").html( items.join(""));
+		vegetables = obj;
+	};
+	function addToCart(id){
+		var amount = document.getElementById(id).value;
+		if (amount != ""){
+			if(amount <= 0){
+				Materialize.toast("Please Select a positive amount to add.", 2500);
+				return;
+			}
+			Materialize.toast("Added "+amount +" "+ vegetables[id].name + " to your cart.", 2500);
+			if(shopping_cart[id] == null ){
+				console.log("Adding new " + id );
+				// Add to cart hash and to shopping cart table
+				shopping_cart[id] = Number(amount);
+				$( "<tr id=\""+id+"_row\"><td>"+vegetables[id].name+"</td><td id=\""+id+"_amount\">"+Number(amount)+"</td><td>"+vegetables[id].price+"</td><td><a id=\"cart_"+id+"_remove\" class=\"waves-effect waves-light btn\" onclick=\"removeFromCart("+id+")\"><i class=\"material-icons\">remove</i></a></td><td><a id=\"cart_"+id+"edit\" class=\"waves-effect waves-light btn\"onclick=\"editFromCart("+id+")\"><i class=\"material-icons\">edit</i></a></td></tr>" ).appendTo("#veggies_list");
+				$(total).html(currentTotal());
+				
+			}else{
+				console.log("Adding to current "+ id);
+				var currentAmount = shopping_cart[id];
+				shopping_cart[id] = Number(currentAmount)+ Number(amount);
+				$("#"+id+"_amount").html("<td id=\""+id+"_amount\">"+Number(shopping_cart[id])+"</td>");
+				$(total).html(currentTotal());
+			}
+			
+			console.log(shopping_cart);
+			
+		}else{
+			Materialize.toast("Please Select an amount to add.", 2500);
+		}
+		// Check if items in cart
+		if(isEmpty(shopping_cart) == false){
+			console.log("Cart is shown");
+			$("#cart").show();
+		}
+		
+	}
+	function currentTotal() {
+		var total = 0;
+		for (var key in shopping_cart) {
+			console.log(shopping_cart[key] * vegetables[key].price);
+			total = total + (shopping_cart[key] * vegetables[key].price) ;
+		}
+		return "$"+total.toFixed(2);
+	}
+	function removeFromCart(id){
+		amount = shopping_cart[id];
+		if(amount == 1){
+			delete shopping_cart[id];
+			$("#"+id+"_row").remove();
+		}else{
+			amount = amount - 1;
+			$("#"+id+"_amount").html(amount);
+			shopping_cart[id] = amount;
+			$(total).html(currentTotal());
+			Materialize.toast("Removed 1 "+vegetables[id].name+" from your cart.", 2500);
+		}
+		if(isEmpty(shopping_cart) == true){
+			console.log("Cart is hidden");
+			$("#cart").hide();
+		}
+	}
+	
+	function editFromCart(id){
+		console.log("edit cart " + id + "_row");
+		$("#"+id+"_row").html("<tr id=\""+id+"_row\"><td>"+vegetables[id].name+"</td><td id=\""+id+"_amount\"><input id=\""+id+"_amount_input\" value=\""+Number(shopping_cart[id])+"\" type=\"number\"></td><td>"+vegetables[id].price+"</td><td><a id=\"cart_"+id+"_remove\" class=\"waves-effect waves-light btn disabled\" onclick=\"removeFromCart("+id+")\"><i class=\"material-icons\">remove</i></a></td><td><a id=\"cart_"+id+"edit\" class=\"waves-effect waves-light btn\"onclick=\"updateAmount("+id+")\"><i class=\"material-icons\">edit</i></a></td></tr>");
+		Materialize.toast("Please update Shopping cart.", 2500);
+	}
+	
+	function updateAmount(id){
+		value = $("#"+id+"_amount_input").val();
+		console.log(value);
+		if( value != ""){
+			console.log(value <= 0);
+			if( value <= 0){
+				delete shopping_cart[id]
+				$("#"+id+"_row").remove();
+				$(total).html(currentTotal());
+			}else{
+				shopping_cart[id] = value;
+				$("#"+id+"_row").html("<td>"+vegetables[id].name+"</td><td id=\""+id+"_amount\">"+Number(shopping_cart[id])+"</td><td>"+vegetables[id].price+"</td><td><a id=\"cart_"+id+"_remove\" class=\"waves-effect waves-light btn\" onclick=\"removeFromCart("+id+")\"><i class=\"material-icons\">remove</i></a></td><td><a id=\"cart_"+id+"edit\" class=\"waves-effect waves-light btn\"onclick=\"editFromCart("+id+")\"><i class=\"material-icons\">edit</i></a></td>");
+				$(total).html(currentTotal());
+			}
+			if(isEmpty(shopping_cart) == true){
+				console.log("Cart is hidden");
+				$("#cart").hide();
+			}
+			Materialize.toast("Updated Shopping cart.", 2500);
+		}else{
+			Materialize.toast("Please enter a number.", 2500);
+		}
+	}
+ 	function isEmpty(obj) {
+		for(var prop in obj) {
+			if(obj.hasOwnProperty(prop))
+				return false;
+		}
+		return true;
+	}
+  </script>
+
+  </body>
+</html>
